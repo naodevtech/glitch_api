@@ -3,10 +3,12 @@ const express = require('express');
 const { OK, NOT_FOUND } = require('../helpers/status_codes');
 
 const authRouter = require('./auth');
+const postsRouter = require('./posts');
 
 const mainRouter = express.Router();
 
 mainRouter.use(authRouter);
+mainRouter.use(postsRouter);
 
 mainRouter.get('/', (request, response) => {
   return response.status(OK).json({
