@@ -2,20 +2,23 @@ const express = require('express');
 
 const { OK, NOT_FOUND } = require('../helpers/status_codes');
 
+const authRouter = require('./auth');
+
 const mainRouter = express.Router();
 
-mainRouter.get('/', (request, response, next) => {
-  response.status(OK).json({
-    message: "Bienvenue dans l'API Facebook-clone 🚀",
+mainRouter.use(authRouter);
+
+mainRouter.get('/', (request, response) => {
+  return response.status(OK).json({
+    message:
+      "Bienvenue dans l'API Glitch, veuillez vous connecter afin de profiter pleinement des endpoints 🚀",
   });
-  next();
 });
 
-mainRouter.get('/*', (request, response, next) => {
-  response.status(NOT_FOUND).json({
+mainRouter.get('/*', (request, response) => {
+  return response.status(NOT_FOUND).json({
     error: 'Erreur 404 ❌',
   });
-  next();
 });
 
 module.exports = mainRouter;
