@@ -64,7 +64,11 @@ module.exports = {
       where: { email: user.email },
     });
 
-    if (!userExist) {
+    if (userExist) {
+      return response.status(CONFLICT).json({
+        error: `Un compte existe déjà avec l'email : ${user.email} ❌`,
+      });
+    } else {
       bcrypt.hash(user.password, 5, async (err, bcryptedPassword) => {
         const newSubscriber = await models.User.create({
           lastname: user.lastname,
@@ -91,12 +95,9 @@ module.exports = {
           });
         }
       });
-    } else {
-      return response.status(CONFLICT).json({
-        error: `Un compte existe déjà avec l'email : ${user.email} ❌`,
-      });
     }
   },
+
   signin: async (request, response) => {
     const user = {
       email: request.body.email,

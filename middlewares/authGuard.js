@@ -17,7 +17,7 @@ module.exports = {
       jwt.verify(token, SECRET_KEY, (error, decoded) => {
         if (error) {
           return response.status(UNAUTHORIZED).json({
-            error: 'Token not valid ❌',
+            error: 'Veuillez vous connecter, votre session à expirée ❌',
           });
         } else {
           request.decoded = decoded;

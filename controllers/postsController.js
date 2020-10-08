@@ -44,10 +44,28 @@ module.exports = {
   },
 
   getAllPosts: async (request, response) => {
-    const allPosts = await models.Post.findAll({});
+    const allPosts = await models.User.findAll({
+      attributes: ['username', 'avatar'],
+      required: true,
+      raw: true,
+      nest: true,
+      include: [
+        {
+          model: models.Post,
+          attributes: ['userId', 'content', 'createdAt'],
+          required: true,
+          raw: true,
+        },
+      ],
+    });
+    for (key in allPosts) {
+      console.log(allPosts[key].Posts.content);
+    }
     if (allPosts) {
-      return response.status(OK).json({
-        Allposts: allPosts,
+      return response.status(OK).json({ allPosts });
+    } else {
+      return response.status(NOT_FOUND).json({
+        error: "Il semble qu'il n'y a aucun posts' ❌",
       });
     }
   },
@@ -153,6 +171,28 @@ module.exports = {
     } else {
       return response.status(UNAUTHORIZED).json({
         error: 'Il semble que ce post ne vous appartiens pas ❌',
+      });
+    }
+  },
+
+  getUserPosts: async (request, response) => {
+    const userId = request.params.id;
+
+    if (!userId) {
+      return response.status(UNAUTHORIZED).json({
+        error:
+          "Il semble qu'il y'a un problème lors de la récupération des posts de l'utiisateur via son ID❌",
+      });
+    }
+    const posts = await models.Post.findAll({
+      where: { userId: userId },
+    });
+
+    if (posts) {
+      return response.status(OK).json({ posts });
+    } else {
+      return response.status(SERVER_ERROR).json({
+        error: 'Il semble y avoir une erreur. Réessayer plus tard. ❌',
       });
     }
   },
