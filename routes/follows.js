@@ -11,9 +11,9 @@ followsRouter.post(
   followsController.followToggle
 );
 // need debug
-// followsRouter.get(
-//   '/users/:id/followings',
-//   authGard.checkWithJWT,
-//   followsController.getUsersFollowersById
-// );
+followsRouter.get(
+  '/users/:id/followings',
+  authGard.checkWithJWT,
+  followsController.getUsersFollowersById
+);
 module.exports = followsRouter;

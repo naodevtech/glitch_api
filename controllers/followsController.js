@@ -10,7 +10,6 @@ const {
   SERVER_ERROR,
   FORBIDDEN,
 } = require('../helpers/status_codes');
-const { response } = require('express');
 
 module.exports = {
   followToggle: async (request, response) => {

@@ -6,6 +6,7 @@ const authRouter = require('./auth');
 const postsRouter = require('./posts');
 const usersRouter = require('./users');
 const followsRouter = require('./follows');
+const commentsRouter = require('./comments');
 
 const mainRouter = express.Router();
 
@@ -13,6 +14,7 @@ mainRouter.use(authRouter);
 mainRouter.use(postsRouter);
 mainRouter.use(usersRouter);
 mainRouter.use(followsRouter);
+mainRouter.use(commentsRouter);
 
 mainRouter.get('/', (request, response) => {
   return response.status(OK).json({
