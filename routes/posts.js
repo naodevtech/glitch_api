@@ -9,6 +9,7 @@ postsRouter.post('/posts', authGard.checkWithJWT, postsController.addPost);
 
 postsRouter.get('/posts', authGard.checkWithJWT, postsController.getAllPosts);
 
+// include user
 postsRouter.get(
   '/posts/:id',
   authGard.checkWithJWT,
@@ -28,7 +29,7 @@ postsRouter.patch(
 );
 
 postsRouter.get(
-  '/profile/:id/posts',
+  '/users/:id/posts',
   authGard.checkWithJWT,
   postsController.getUserPosts
 );

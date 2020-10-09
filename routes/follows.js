@@ -10,9 +10,10 @@ followsRouter.post(
   authGard.checkWithJWT,
   followsController.followToggle
 );
+
 // need debug
 followsRouter.get(
-  '/users/:id/followings',
+  '/users/:id/followers',
   authGard.checkWithJWT,
   followsController.getUsersFollowersById
 );

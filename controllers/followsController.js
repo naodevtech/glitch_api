@@ -103,22 +103,24 @@ module.exports = {
       });
     }
 
-    const followings = await models.User.findAll({
-      attributes: ['username', 'avatar'],
+    const followers = await models.Follow.findAll({
+      attributes: ['followerId'],
       required: true,
+      nest: true,
+      where: { followedId: userId },
       include: [
         {
-          model: models.Follow,
-          attributes: ['id', 'followerId'],
+          model: models.User,
+          attributes: ['username', 'avatar'],
           required: true,
         },
       ],
     });
 
-    console.log(followings);
+    console.log(followers);
 
-    if (followings) {
-      return response.status(OK).json({ followings });
+    if (followers) {
+      return response.status(OK).json({ followers });
     } else {
       return response.status(SERVER_ERROR).json({
         error: 'Il semble y avoir une erreur, réessayez plus tard ❌',

@@ -10,6 +10,8 @@ const {
   UNAUTHORIZED,
 } = require('../helpers/status_codes');
 
+const likesController = require('./likesController');
+
 module.exports = {
   addPost: async (request, response) => {
     const userId = await jwtUtils.getUserId(
@@ -55,12 +57,11 @@ module.exports = {
           attributes: ['userId', 'content', 'createdAt'],
           required: true,
           raw: true,
+          nest: true,
         },
       ],
     });
-    for (key in allPosts) {
-      console.log(allPosts[key].Posts.content);
-    }
+
     if (allPosts) {
       return response.status(OK).json({ allPosts });
     } else {
@@ -71,15 +72,46 @@ module.exports = {
   },
 
   getPostById: async (request, response) => {
-    const postId = request.params.id;
+    const postId = parseInt(request.params.id);
 
-    const postFoundByid = await models.Post.findOne({
-      attributes: ['id', 'content', 'userId', 'createdAt'],
-      where: { id: postId },
+    const postFoundByid = await models.User.findOne({
+      attributes: ['username', 'avatar'],
+      required: true,
+      nest: true,
+      include: [
+        {
+          model: models.Post,
+          attributes: ['id', 'content', 'userId', 'createdAt'],
+          where: { id: postId },
+          nest: true,
+          include: [
+            {
+              model: models.Like,
+              attributes: ['userId'],
+              where: { postId: postId },
+              required: false,
+            },
+            {
+              model: models.Comment,
+              attributes: ['userId'],
+              where: { postId: postId },
+              required: false,
+            },
+          ],
+        },
+      ],
     });
 
     if (postFoundByid) {
-      return response.status(OK).json({ postFoundByid });
+      return response.status(OK).json({
+        username: postFoundByid.username,
+        avatar: postFoundByid.avatar,
+        content: postFoundByid.Posts[0].content,
+        createdAt: postFoundByid.Posts[0].createdAt,
+        likes: postFoundByid.Posts[0].Likes.length,
+        comments: postFoundByid.Posts[0].Comments.length,
+        // postFoundByid,
+      });
     } else {
       return response.status(NOT_FOUND).json({
         error: "Il semble que ce post n'existe pas ou plus ❌",
