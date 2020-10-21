@@ -11,26 +11,26 @@ postsRouter.get('/posts', authGard.checkWithJWT, postsController.getAllPosts);
 
 // include user
 postsRouter.get(
-  '/posts/:id',
-  authGard.checkWithJWT,
-  postsController.getPostById
+	'/posts/:id',
+	authGard.checkWithJWT,
+	postsController.getPostById
 );
 
 postsRouter.delete(
-  '/posts/:id',
-  authGard.checkWithJWT,
-  postsController.deletePostById
+	'/posts/:id',
+	authGard.checkWithJWT,
+	postsController.deletePostById
 );
 
 postsRouter.patch(
-  '/posts/:id',
-  authGard.checkWithJWT,
-  postsController.updatePostById
+	'/posts/:id',
+	authGard.checkWithJWT,
+	postsController.updatePostById
 );
 
 postsRouter.get(
-  '/users/:id/posts',
-  authGard.checkWithJWT,
-  postsController.getUserPosts
+	'/users/:id/posts',
+	authGard.checkWithJWT,
+	postsController.getUserPosts
 );
 module.exports = postsRouter;

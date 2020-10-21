@@ -8,10 +8,10 @@ const routes = require('./routes');
 
 const server = express();
 
+server.use('/api', cors());
 server.use(helmet());
 server.use(logger('tiny'));
 server.use(bodyParser.json());
-server.use('/api', cors());
 
 server.use('/api', routes);
 

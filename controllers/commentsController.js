@@ -79,7 +79,7 @@ module.exports = {
     }
 
     const comments = await models.User.findAll({
-      attributes: ['username', 'avatar'],
+      attributes: ['id','username', 'avatar'],
       required: true,
       nest: true,
       raw: true,

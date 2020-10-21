@@ -19,16 +19,16 @@ mainRouter.use(commentsRouter);
 mainRouter.use(likesRouter);
 
 mainRouter.get('/', (request, response) => {
-  return response.status(OK).json({
-    message:
-      "Bienvenue dans l'API Glitch, veuillez vous connecter afin de profiter pleinement des endpoints 🚀",
-  });
+	return response.status(OK).json({
+		message:
+			"Bienvenue dans l'API Glitch, veuillez vous connecter afin de profiter pleinement des endpoints 🚀",
+	});
 });
 
 mainRouter.get('/*', (request, response) => {
-  return response.status(NOT_FOUND).json({
-    error: 'Erreur 404 ❌',
-  });
+	return response.status(NOT_FOUND).json({
+		error: 'Erreur 404 ❌',
+	});
 });
 
 module.exports = mainRouter;

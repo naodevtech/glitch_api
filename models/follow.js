@@ -15,6 +15,12 @@ module.exports = (sequelize, DataTypes) => {
           name: 'id',
         },
       });
+      models.Follow.belongsTo(models.User, {
+        foreignKey: {
+          allowNull: false,
+          name: 'id',
+        },
+      });
     }
   }
   Follow.init(
