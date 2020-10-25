@@ -60,7 +60,7 @@ module.exports = {
     }
     if (user.avatar == null) {
       user.avatar =
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Mark_Zuckerberg_F8_2018_Keynote_%28cropped_2%29.jpg/1200px-Mark_Zuckerberg_F8_2018_Keynote_%28cropped_2%29.jpg";
+        "https://images.lpcdn.ca/924x615/201704/03/1378796-depuis-sept-ans-quiconque-creait.jpg";
     }
 
     const userExist = await models.User.findOne({

@@ -1,21 +1,21 @@
-const express = require('express');
-const authGard = require('../middlewares/authGuard');
+const express = require("express");
+const authGard = require("../middlewares/authGuard");
 
-const followsController = require('../controllers/followsController');
+const followsController = require("../controllers/followsController");
 
 const followsRouter = express.Router();
 
 followsRouter.post(
-	'/users/:id/follows',
-	authGard.checkWithJWT,
-	followsController.followToggle
+  "/users/:id/follows",
+  authGard.checkWithJWT,
+  followsController.followToggle
 );
 
 // need debug
 followsRouter.get(
-	'/users/:id/followers',
-	authGard.checkWithJWT,
-	followsController.getUsersFollowersById
+  "/users/:id/followers",
+  authGard.checkWithJWT,
+  followsController.getUsersFollowersById
 );
 
 module.exports = followsRouter;

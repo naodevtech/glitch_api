@@ -1,6 +1,6 @@
-const models = require('../models');
+const models = require("../models");
 
-const jwtUtils = require('../helpers/jwt_utils');
+const jwtUtils = require("../helpers/jwt_utils");
 
 const {
   OK,
@@ -9,7 +9,7 @@ const {
   CREATED,
   SERVER_ERROR,
   FORBIDDEN,
-} = require('../helpers/status_codes');
+} = require("../helpers/status_codes");
 
 module.exports = {
   addComment: async (request, response) => {
@@ -25,11 +25,11 @@ module.exports = {
       postId: postId,
       userId: userId,
     };
-    console.log(comment);
+    console.log("hello", comment);
 
     if (!comment.content) {
       return response.status(BAD_REQUEST).json({
-        error: 'Veuillez écrire un commentaire afin de le poster ❌',
+        error: "Veuillez écrire un commentaire afin de le poster ❌",
       });
     }
 
@@ -52,14 +52,14 @@ module.exports = {
 
     if (commentSent) {
       return response.status(CREATED).json({
-        message: 'Votre commentaire à bien été envoyé 🚀',
+        message: "Votre commentaire à bien été envoyé 🚀",
         content: comment.content,
         postId: comment.postId,
         userId: comment.userId,
       });
     } else {
       return response.status(SERVER_ERROR).json({
-        error: 'Il semble il y avoir une erreur,  réessayez plus tard ❌',
+        error: "Il semble il y avoir une erreur,  réessayez plus tard ❌",
       });
     }
   },
@@ -79,7 +79,7 @@ module.exports = {
     }
 
     const comments = await models.User.findAll({
-      attributes: ['id','username', 'avatar'],
+      attributes: ["id", "username", "avatar"],
       required: true,
       nest: true,
       raw: true,
@@ -88,7 +88,7 @@ module.exports = {
           model: models.Comment,
           where: { postId: postId },
           required: true,
-          attributes: ['content', 'createdAt'],
+          attributes: ["content", "createdAt"],
         },
       ],
     });

@@ -1,6 +1,6 @@
-const models = require('../models');
+const models = require("../models");
 
-const jwtUtils = require('../helpers/jwt_utils');
+const jwtUtils = require("../helpers/jwt_utils");
 
 const {
   OK,
@@ -9,7 +9,7 @@ const {
   CREATED,
   SERVER_ERROR,
   FORBIDDEN,
-} = require('../helpers/status_codes');
+} = require("../helpers/status_codes");
 
 module.exports = {
   addlike: async (request, response) => {
@@ -44,7 +44,7 @@ module.exports = {
 
     if (addLike) {
       return response.status(CREATED).json({
-        message: 'Vous venez de liker ce post 🙏🏼',
+        message: "Vous venez de liker ce post 🙏🏼",
       });
     } else {
       return response.status(SERVER_ERROR).json({
@@ -74,11 +74,11 @@ module.exports = {
     }
 
     const isLiked = await models.Like.findOne({
-      attributes: ['userId'],
+      attributes: ["userId"],
       where: { userId: userId, postId: postId },
     });
 
-    console.log(isLiked);
+    // console.log(isLiked);
 
     if (!isLiked) {
       return module.exports.addlike(request, response);
@@ -89,7 +89,7 @@ module.exports = {
     });
     if (dislike) {
       return response.status(CREATED).json({
-        message: 'Vous venez de disliker ce post 🙏🏼',
+        message: "Vous venez de disliker ce post 🙏🏼",
       });
     } else {
       return response.status(SERVER_ERROR).json({
@@ -114,7 +114,7 @@ module.exports = {
     }
 
     const likes = await models.User.findAll({
-      attributes: ['username', 'avatar'],
+      attributes: ["username", "avatar"],
       required: true,
       nest: true,
       raw: true,
@@ -122,7 +122,7 @@ module.exports = {
         {
           model: models.Like,
           where: { postId: postId },
-          attributes: ['userId'],
+          attributes: ["userId"],
         },
       ],
     });
@@ -131,7 +131,7 @@ module.exports = {
       return response.status(OK).json({ likes });
     } else {
       return response.status(NOT_FOUND).json({
-        error: 'Il semble il y avoir aucun likes sur ce post ❌',
+        error: "Il semble il y avoir aucun likes sur ce post ❌",
       });
     }
   },
