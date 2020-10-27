@@ -1,6 +1,6 @@
-const models = require('../models');
+const models = require("../models");
 
-const jwtUtils = require('../helpers/jwt_utils');
+const jwtUtils = require("../helpers/jwt_utils");
 
 const {
   OK,
@@ -8,7 +8,7 @@ const {
   SERVER_ERROR,
   NOT_FOUND,
   UNAUTHORIZED,
-} = require('../helpers/status_codes');
+} = require("../helpers/status_codes");
 
 module.exports = {
   getUserInfos: async (request, response) => {
@@ -22,22 +22,30 @@ module.exports = {
     }
 
     const userInfos = await models.User.findOne({
-      attributes: ['lastname', 'firstname', 'username', 'email', 'avatar'],
+      attributes: [
+        "id",
+        "lastname",
+        "firstname",
+        "username",
+        "email",
+        "avatar",
+      ],
       where: { id: userId },
     });
 
     const followers = await models.Follow.findAll({
-      attributes: ['followerId'],
+      attributes: ["followerId"],
       where: { followedId: userId },
     });
 
     const followings = await models.Follow.findAll({
-      attributes: ['followedId'],
+      attributes: ["followedId"],
       where: { followerId: userId },
     });
 
     if (followers) {
       return response.status(OK).json({
+        id: userInfos.id,
         lastname: userInfos.lastname,
         firstname: userInfos.firstname,
         username: userInfos.username,
@@ -48,7 +56,7 @@ module.exports = {
       });
     } else {
       return response.status(SERVER_ERROR).json({
-        error: 'Il semble y avoir une erreur. Réessayer plus tard. ❌',
+        error: "Il semble y avoir une erreur. Réessayer plus tard. ❌",
       });
     }
   },

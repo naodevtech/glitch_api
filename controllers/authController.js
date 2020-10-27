@@ -139,7 +139,7 @@ module.exports = {
             id: userExist.id,
             firstname: userExist.firstname,
             lastname: userExist.lastname,
-            username: request.body.username,
+            username: userExist.username,
             email: userExist.email,
             avatar: userExist.avatar,
           };
