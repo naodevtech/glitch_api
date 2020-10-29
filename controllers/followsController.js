@@ -119,4 +119,29 @@ module.exports = {
       });
     }
   },
+
+  getUsersFollowingsById: async (request, response) => {
+    const userId = parseInt(request.params.id);
+
+    if (!userId) {
+      return response.status(UNAUTHORIZED).json({
+        error:
+          "Il semble qu'il y'a un problème lors de la récupération des posts de l'utiisateur via son ID❌",
+      });
+    }
+
+    const followings = await models.Follow.findAll({
+      attributes: ["followerId", "followedId"],
+      where: { followerId: userId },
+      include: [{ model: models.User, as: "followed", required: true }],
+    });
+
+    if (followings) {
+      return response.status(OK).json({ followings });
+    } else {
+      return response.status(SERVER_ERROR).json({
+        error: "Il semble y avoir une erreur, réessayez plus tard ❌",
+      });
+    }
+  },
 };

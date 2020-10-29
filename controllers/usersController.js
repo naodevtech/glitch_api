@@ -60,4 +60,38 @@ module.exports = {
       });
     }
   },
+
+  searchUserByUsername: async (request, response) => {
+    const userId = await jwtUtils.getUserId(
+      request.headers.authorization,
+      response
+    );
+
+    const searchTerm = request.query.searchTerm;
+
+    if (!userId) {
+      return response.status(UNAUTHORIZED).json({
+        error:
+          "Il semble qu'il y'a un problème lors de la récupération des posts de l'utiisateur via son ID❌",
+      });
+    }
+
+    if (!searchTerm) {
+      return response.status(NOT_FOUND).json({
+        error: "Veuillez écrire un nom d'utilisateur afin de le rechercher ❌",
+      });
+    }
+    const userExist = await models.User.findOne({
+      attributes: ["id", "username", "avatar"],
+      where: { username: searchTerm },
+    });
+
+    if (userExist) {
+      return response.status(OK).json({ userExist });
+    } else {
+      return response.status(NOT_FOUND).json({
+        error: "Il ne semble pas y avoir d'utilisateur portant ce nom 😭",
+      });
+    }
+  },
 };

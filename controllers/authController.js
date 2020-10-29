@@ -22,30 +22,40 @@ function isString(value) {
 
 module.exports = {
   signup: async (request, response) => {
+    let file = request.file;
+    let fileComplete = "http://localhost:8000/api/";
+
+    if (file === undefined) {
+      fileComplete =
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Mark_Zuckerberg_F8_2018_Keynote_%28cropped_2%29.jpg/1200px-Mark_Zuckerberg_F8_2018_Keynote_%28cropped_2%29.jpg";
+    } else {
+      fileComplete = fileComplete + file.filename;
+    }
+
     const user = {
       lastname: request.body.lastname,
       firstname: request.body.firstname,
       username: request.body.username,
       email: request.body.email,
       password: request.body.password,
-      avatar: request.body.avatar,
+      avatar: fileComplete,
     };
 
-    // for (const key in user) {
-    // 	if (user[key] == null) {
-    // 		return response.status(BAD_REQUEST).json({
-    // 			error: `Le champs ${key} n'est pas renseigné ❌`,
-    // 		});
-    // 	}
-    // }
+    for (const key in user) {
+      if (user[key] == null) {
+        return response.status(BAD_REQUEST).json({
+          error: `Le champs ${key} n'est pas renseigné ❌`,
+        });
+      }
+    }
 
-    // for (const key in user) {
-    // 	if (!isString(user[key])) {
-    // 		return response.status(BAD_REQUEST).json({
-    // 			error: `Le champs ${key} n'est pas une chaîne de caractères ❌`,
-    // 		});
-    // 	}
-    // }
+    for (const key in user) {
+      if (!isString(user[key])) {
+        return response.status(BAD_REQUEST).json({
+          error: `Le champs ${key} n'est pas une chaîne de caractères ❌`,
+        });
+      }
+    }
 
     if (!checkEmail.test(user.email)) {
       return response.status(BAD_REQUEST).json({
@@ -57,10 +67,6 @@ module.exports = {
       return response.status(BAD_REQUEST).json({
         error: `Le mot de passe doir contenir au moins 1 majuscule un chiffre un caractère spécial et 8 et 15 caractères❌`,
       });
-    }
-    if (user.avatar == null) {
-      user.avatar =
-        "https://images.lpcdn.ca/924x615/201704/03/1378796-depuis-sept-ans-quiconque-creait.jpg";
     }
 
     const userExist = await models.User.findOne({

@@ -18,4 +18,10 @@ followsRouter.get(
   followsController.getUsersFollowersById
 );
 
+followsRouter.get(
+  "/users/:id/followings",
+  authGard.checkWithJWT,
+  followsController.getUsersFollowingsById
+);
+
 module.exports = followsRouter;
