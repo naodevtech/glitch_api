@@ -26,8 +26,7 @@ module.exports = {
     let fileComplete = "http://localhost:8000/api/";
 
     if (file === undefined) {
-      fileComplete =
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Mark_Zuckerberg_F8_2018_Keynote_%28cropped_2%29.jpg/1200px-Mark_Zuckerberg_F8_2018_Keynote_%28cropped_2%29.jpg";
+      fileComplete = "http://localhost:8000/api/glitch_rounded.png";
     } else {
       fileComplete = fileComplete + file.filename;
     }
