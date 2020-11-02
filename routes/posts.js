@@ -9,7 +9,6 @@ postsRouter.post("/posts", authGard.checkWithJWT, postsController.addPost);
 
 postsRouter.get("/posts", authGard.checkWithJWT, postsController.getAllPosts);
 
-// include user
 postsRouter.get(
   "/posts/:id",
   authGard.checkWithJWT,
@@ -33,4 +32,5 @@ postsRouter.get(
   authGard.checkWithJWT,
   postsController.getUserPosts
 );
+
 module.exports = postsRouter;

@@ -8,6 +8,7 @@ const usersRouter = require("./users");
 const followsRouter = require("./follows");
 const commentsRouter = require("./comments");
 const likesRouter = require("./likes");
+const trendsRouter = require("./trends");
 
 const mainRouter = express.Router();
 
@@ -17,6 +18,7 @@ mainRouter.use(usersRouter);
 mainRouter.use(followsRouter);
 mainRouter.use(commentsRouter);
 mainRouter.use(likesRouter);
+mainRouter.use(trendsRouter);
 
 mainRouter.use(express.static("uploads"));
 

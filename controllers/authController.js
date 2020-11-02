@@ -26,7 +26,7 @@ module.exports = {
     let fileComplete = "http://localhost:8000/api/";
 
     if (file === undefined) {
-      fileComplete = "http://localhost:8000/api/glitch_rounded.png";
+      fileComplete = `${fileComplete}glitch_rounded.png`;
     } else {
       fileComplete = fileComplete + file.filename;
     }
