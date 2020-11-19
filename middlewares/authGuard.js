@@ -14,7 +14,6 @@ module.exports = {
       requestToken = requestToken.slice(7, requestToken.length);
     }
     const token = await parsingAuthorization.parsingAuthorization(requestToken);
-    // console.log(token);
     if (token) {
       jwt.verify(token, SECRET_KEY, (error, decoded) => {
         if (error) {

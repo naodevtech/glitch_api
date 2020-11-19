@@ -10,6 +10,8 @@ const {
   UNAUTHORIZED,
 } = require("../helpers/status_codes");
 
+const checkEmail = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
 module.exports = {
   getUserInfos: async (request, response) => {
     const userId = request.params.id;
@@ -91,6 +93,98 @@ module.exports = {
     } else {
       return response.status(NOT_FOUND).json({
         error: "Il ne semble pas y avoir d'utilisateur portant ce nom 😭",
+      });
+    }
+  },
+
+  updateUserEmail: async (request, response) => {
+    const userId = await jwtUtils.getUserId(
+      request.headers.authorization,
+      response
+    );
+
+    if (!userId) {
+      return response.status(UNAUTHORIZED).json({
+        error:
+          "Il semble qu'il y'a un problème lors de la récupération des posts de l'utiisateur via son ID❌",
+      });
+    }
+
+    const userExist = await models.User.findOne({
+      where: { id: userId },
+    });
+
+    if (!userExist) {
+      return response.status(UNAUTHORIZED).json({
+        error: "Erreur lors de la récupération de l'utilisateur via l'ID ❌",
+      });
+    }
+
+    const emailUser = request.body.email;
+
+    if (!emailUser) {
+      return response.status(NOT_FOUND).json({
+        error: "Veuillez écrire une adresse-email ❌",
+      });
+    } else if (!checkEmail.test(emailUser)) {
+      return response.status(BAD_REQUEST).json({
+        error: `Le champ email est mal renseigné ex:jeandupont@domaine.com ❌`,
+      });
+    }
+
+    const emailUpdated = await models.User.update(
+      { email: emailUser },
+      { where: { id: userId } }
+    );
+
+    if (emailUpdated) {
+      return response.status(CREATED).json({
+        message: "Votre email à bien été mis à jour 🌐",
+        email: emailUser,
+      });
+    } else {
+      return response.status(UNAUTHORIZED).json({
+        error:
+          "Il semble que ce compte ne vous appartiens pas (ID incorrect) ❌",
+      });
+    }
+  },
+
+  deleteAccount: async (request, response) => {
+    const userId = await jwtUtils.getUserId(
+      request.headers.authorization,
+      response
+    );
+
+    if (!userId) {
+      return response.status(UNAUTHORIZED).json({
+        error:
+          "Il semble qu'il y'a un problème lors de la récupération des posts de l'utiisateur via son ID❌",
+      });
+    }
+
+    const userExist = await models.User.findOne({
+      where: { id: userId },
+    });
+
+    if (!userExist) {
+      return response.status(UNAUTHORIZED).json({
+        error: "Erreur lors de la récupération de l'utilisateur via l'ID ❌",
+      });
+    }
+
+    const accountDeleted = await models.User.destroy({
+      where: { id: userId },
+    });
+
+    if (accountDeleted) {
+      return response.status(OK).json({
+        message: "Votre compte à bien été supprimé 😭",
+      });
+    } else {
+      return response.status(UNAUTHORIZED).json({
+        error:
+          "Il semble que ce compte ne vous appartiens pas (ID : incorrect) ❌",
       });
     }
   },

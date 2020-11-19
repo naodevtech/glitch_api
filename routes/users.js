@@ -18,4 +18,16 @@ usersRouter.get(
   usersController.searchUserByUsername
 );
 
+usersRouter.patch(
+  "/users",
+  authGard.checkWithJWT,
+  usersController.updateUserEmail
+);
+
+usersRouter.delete(
+  "/users",
+  authGard.checkWithJWT,
+  usersController.deleteAccount
+);
+
 module.exports = usersRouter;
