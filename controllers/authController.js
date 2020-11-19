@@ -12,7 +12,6 @@ const {
   FORBIDDEN,
   NOT_FOUND,
 } = require("../helpers/status_codes");
-const { request, response } = require("express");
 
 const checkEmail = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 let checkPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
@@ -79,12 +78,12 @@ module.exports = {
         error: `Un compte existe déjà avec l'email : ${user.email} ❌`,
       });
     } else {
-      bcrypt.hash(user.password, 5, async (err, bcryptedPassword) => {
+      bcrypt.hash(user.password, 10, async (err, bcryptedPassword) => {
         const newSubscriber = await models.User.create({
           lastname: user.lastname,
           firstname: user.firstname,
           username: request.body.username,
-          email: user.email,
+          email: user.email.toLowerCase(),
           password: bcryptedPassword,
           avatar: user.avatar,
         });

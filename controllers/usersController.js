@@ -8,6 +8,7 @@ const {
   SERVER_ERROR,
   NOT_FOUND,
   UNAUTHORIZED,
+  BAD_REQUEST,
 } = require("../helpers/status_codes");
 
 const checkEmail = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -129,6 +130,16 @@ module.exports = {
     } else if (!checkEmail.test(emailUser)) {
       return response.status(BAD_REQUEST).json({
         error: `Le champ email est mal renseigné ex:jeandupont@domaine.com ❌`,
+      });
+    }
+
+    const emailExisting = await models.User.findOne({
+      where: { email: emailUser },
+    });
+
+    if (emailExisting) {
+      return response.status(BAD_REQUEST).json({
+        error: `cet email est déjà pris  ❌`,
       });
     }
 

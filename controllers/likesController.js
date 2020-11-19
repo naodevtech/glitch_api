@@ -78,8 +78,6 @@ module.exports = {
       where: { userId: userId, postId: postId },
     });
 
-    // console.log(isLiked);
-
     if (!isLiked) {
       return module.exports.addlike(request, response);
     }
@@ -87,6 +85,7 @@ module.exports = {
     const dislike = await models.Like.destroy({
       where: { userId: userId, postId: postId },
     });
+
     if (dislike) {
       return response.status(CREATED).json({
         message: "Vous venez de disliker ce post 🙏🏼",
